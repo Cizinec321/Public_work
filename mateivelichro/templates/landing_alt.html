@@ -1,0 +1,443 @@
+{%extends 'default_alt.html'%}
+
+
+
+{%block script%}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> 
+       {% autoescape off %}
+       {{scrolltrigger}}
+       {% endautoescape %}
+       
+<script>
+              function hideall_except(exc) {
+                     if(exc!='about'){document.getElementById('about').className='about'};
+                     if(exc!='edu'){document.getElementById('edu').className='edu'};
+                     if(exc!='xp'){document.getElementById('xp').className='xp'};
+                     if(exc!='contact'){document.getElementById('contact').className='contact'};
+                     if(exc!='steamapi'){document.getElementById('steamapi').className='steamapi'};
+                     if(exc!='co2'){document.getElementById('co2').className='co2'};
+              }
+              
+
+</script>
+
+
+
+{%endblock%}
+
+
+{%block chart_script%}
+<script src="https://cdn.canvasjs.com/ga/canvasjs.min.js"></script>
+<script>
+  window.onload = function () {
+    var chart = new CanvasJS.Chart("chartContainer", {
+      exportEnabled: true,
+      axisY: {
+        title: "CO2 generated in Grams"
+      },
+      toolTip: {
+        shared: true,
+        reversed: true
+      },
+      legend: {
+        cursor: "pointer",
+        itemclick: hideUnhideDataSeries
+      },
+      data: [{
+        type: "stackedColumn",
+        name: "LPG",
+        showInLegend: true,
+        yValueFormatString: "#,##0 G",
+        dataPoints: {{ lpg|safe }}
+      },{
+        type: "stackedColumn",
+        name: "Electricity Ap.8",
+        showInLegend: true,
+        yValueFormatString: "#,##0 G",
+        dataPoints: {{ elec_ap8|safe }}
+      },{
+        type: "stackedColumn",
+        name: "Electricity Ap.20",
+        showInLegend: true,
+        yValueFormatString: "#,##0 G",
+        dataPoints: {{ elec_ap20|safe }}
+      },{
+        type: "stackedColumn",
+        name: "Gas Ap.8",
+        showInLegend: true,
+        yValueFormatString: "#,##0 G",
+        dataPoints: {{ gas_ap8|safe }}
+      },{
+        type: "stackedColumn",
+        name: "Gas Ap.20",
+        showInLegend: true,
+        yValueFormatString: "#,##0 G",
+        dataPoints: {{ gas_ap20|safe }}
+      },{
+        type: "stackedColumn",
+        name: "Gasoline",
+        showInLegend: true,
+        yValueFormatString: "#,##0 G",
+        dataPoints: {{ gasoline|safe }}
+      },{
+        type: "stackedColumn",
+        name: "Work FLight",
+        showInLegend: true,
+        yValueFormatString: "#,##0 G",
+        dataPoints: {{ work_flight|safe }}
+      },{
+        type: "stackedColumn",
+        name: "Leisure FLight",
+        showInLegend: true,
+        yValueFormatString: "#,##0 G",
+        dataPoints: {{ leisure_flight|safe }}
+      }]
+    });
+    chart.render();
+ 
+    function hideUnhideDataSeries(e) {
+      if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+        e.dataSeries.visible = false;
+      } else {
+        e.dataSeries.visible = true;
+      }
+ 
+      e.chart.render();
+    }
+  }
+</script>
+{%endblock%}
+
+{%block login_div%}
+
+       {% if mobile %}
+              <button class="dropbtn" type="button" onclick="if (document.getElementById('menubtn').className=='m_dropdown-menu' || document.getElementById('menubtn').className=='dropdown-menu'){document.getElementById('menubtn').className='m_dropdown-menu_show'}else{document.getElementById('menubtn').className='m_dropdown-menu'}";></button>
+       {% else %}
+              <button class="dropbtn" type="button" onclick="if (document.getElementById('menubtn').className=='dropdown-menu'){document.getElementById('menubtn').className='dropdown-menu_show'}else{document.getElementById('menubtn').className='dropdown-menu'}";></button>
+       {% endif %}
+{%endblock%}
+
+
+
+{%block comm_div%}
+       {% autoescape off %}
+       {{display_trigger_comm}}       
+       {{comm_msg}}
+       <div style="bottom: 5px; text-align: right;padding-top:40px;">
+       {% if mobile %}
+       <button class="mastextgold" type="button" onclick="if (document.getElementById('comm_div').style.display=== 'none'){document.getElementById('comm_div').style.display = 'block'}else{document.getElementById('comm_div').style.display = 'none'}">Close</button><br>
+       {% else %}
+       <button class="astextgold" type="button" onclick="if (document.getElementById('comm_div').style.display=== 'none'){document.getElementById('comm_div').style.display = 'block'}else{document.getElementById('comm_div').style.display = 'none'}">Close</button><br>
+       {% endif %}
+       </div>
+       </div>
+       {% endautoescape %}
+{%endblock%}
+
+{%block menu_div%}
+
+       {% autoescape off %}
+       {% if mobile %}
+              <div id="menubtn" class="m_dropdown-menu">
+              <button class="m_astext" type="button" onclick="hideall_except('about');if (document.getElementById('about').className=='about'){document.getElementById('about').className='about_show'}">About Me</button><br>
+              <button class="m_astext" type="button" onclick="hideall_except('edu');if (document.getElementById('edu').className=='edu'){document.getElementById('edu').className='edu_show'}">Education</button><br>
+              <button class="m_astext" type="button" onclick="hideall_except('xp');if (document.getElementById('xp').className=='xp'){document.getElementById('xp').className='xp_show'}">Experience and Skills</button><br>
+              <button class="m_astext" type="button" onclick="hideall_except('contact');if (document.getElementById('contact').className=='contact'){document.getElementById('contact').className='contact_show'}">Contact</button><br>
+              <button class="m_astext" type="button" onclick="hideall_except('steamapi');if (document.getElementById('steamapi').className=='steamapi'){document.getElementById('steamapi').className='steamapi_show'}">Hobies</button><br>
+              <button class="m_astext" type="button" onclick="hideall_except('co2');if (document.getElementById('co2').className=='co2'){document.getElementById('co2').className='co2_show'}">Household CO2</button><br>
+       
+       {% else %}
+              <div id="menubtn" class="dropdown-menu">
+              <button class="astext" type="button" onclick="hideall_except('about');if (document.getElementById('about').className=='about'){document.getElementById('about').className='about_show'}">About Me</button><br>
+              <button class="astext" type="button" onclick="hideall_except('edu');if (document.getElementById('edu').className=='edu'){document.getElementById('edu').className='edu_show'}">Education</button><br>
+              <button class="astext" type="button" onclick="hideall_except('xp');if (document.getElementById('xp').className=='xp'){document.getElementById('xp').className='xp_show'}">Experience and Skills</button><br>
+              <button class="astext" type="button" onclick="hideall_except('contact');if (document.getElementById('contact').className=='contact'){document.getElementById('contact').className='contact_show'}">Contact</button><br>
+              <button class="astext" type="button" onclick="hideall_except('steamapi');if (document.getElementById('steamapi').className=='steamapi'){document.getElementById('steamapi').className='steamapi_show'}">Hobies</button><br>
+              <button class="astext" type="button" onclick="hideall_except('co2');if (document.getElementById('co2').className=='co2'){document.getElementById('co2').className='co2_show'}">Household CO2</button><br>
+       
+       {% endif %}
+       {% endautoescape %}
+ 
+   
+       
+       </div>
+       {% autoescape off %}
+       {{extra_trigger}}
+       {% endautoescape %}
+
+{%endblock%}
+
+
+
+{%block registerdiv%}
+
+       <div class="sub1_pos5I_alt" margin:0="" auto;="">
+       <div class="sub1_pos5I_inner_alt" margin:0="" auto;="">
+              <div>
+              {% if mobile %}
+              <p class="mphl"><b>Contact Form</b></p>
+              {% else %}
+              <p class="phl"><b>Contact Form</b></p>
+              {% endif %}
+              <form method="post" enctype="multipart/form-data">{% csrf_token %}
+                     <table >
+                            {% for field in pers_data_form %}
+        
+                            <tr>
+                            <td>
+                                   {{ field }}
+                                   {{ pers_data_form.media }}
+                            </td>
+                            </tr>
+                            {% endfor %}       
+       
+                
+       
+                    
+                            </table>
+                     <hr/>
+                     {% if mobile %}
+                     <input type="submit" value="Send" name="register_form" class="mastextgold" /><br>
+                     {% else %}
+                     <input type="submit" value="Send" name="register_form" class="astextgold" /><br>
+                     {% endif %}
+                     
+              </form>
+              </div>
+       </div>
+       </div>
+
+
+
+{%endblock%}
+
+{%block steamapi%}
+       {% autoescape off %}
+              {{steam_plate}}
+              {{github_plate}}
+       {% endautoescape %}
+{%endblock%}
+
+
+
+
+{%block about%}
+       {% if mobile %}
+              <p class="mphl">
+              About Me
+              </p><br>
+              <p class="mp1l">
+              I am a Development Engineer with a wide range of interests and skills currently living in Cluj - Romania .
+              </p>
+              <p class="mp1l">
+              Nowadays I am mostly interested in any technology related to database development and maintanance (with SQL and Python) and software development but I am also widening my skill range in web development.
+              </p>
+              <p class="mp1l">
+              In the past, I have worked on various small personal projects (mostly in C# but I have explored the entire .net ecosystem) which later evolved into automating server-side ETL processes in various scripting languages (Python, bash, powershell).
+              </p>
+              <p class="mp1l">
+              Today allot of my work revolves around developing ETL processes while in my spare time I like to explore various technologies from Django and Javascript to C++.
+              </p>
+
+       {% else %}
+              <p class="phl">
+              About Me
+              </p><br>
+              <p class="p1l">
+              I am a Development Engineer with a wide range of interests and skills currently living in Cluj - Romania .
+              </p>
+              <p class="p1l">
+              Nowadays I am mostly interested in any technology related to database development and maintanance (with SQL and Python) and software development but I am also widening my skill range in web development.
+              </p>
+              <p class="p1l">
+              In the past, I have worked on various small personal projects (mostly in C# but I have explored the entire .net ecosystem) which later evolved into automating server-side ETL processes in various scripting languages (Python, bash, powershell).
+              </p>
+              <p class="p1l">
+              Today allot of my work revolves around developing ETL processes while in my spare time I like to explore various technologies from Django and Javascript to C++.
+              </p>
+       {% endif %}
+{%endblock%}
+
+
+{%block edu%}
+       {% if mobile %}
+              <p class="mphl">
+              Education
+              </p><br>
+              <p class="mp1l">
+              BABES BOLYAI UNIVERSITY, CLUJ-NAPOCA ( RO )
+              </p>
+              <p class="mp1l">
+              October 2014 to July 2016<br>
+              Masters Degree within the Clinical Psychology Department<br>
+              Faculty of Psychology and Education Sciences<br>
+              Title of Master's program: Psychological techniques for behavior control and development of human potential<br>
+              </p><br>
+              <p class="mp1l">
+              BABES BOLYAI UNIVERSITY, CLUJ-NAPOCA ( RO )
+              </p>
+              <p class="mp1l">
+              October 2011 to July 2014<br>
+              Bachelor degree in Psychology within the Psychology Department<br>
+              Faculty of Psychology and Education Sciences
+              </p><br>
+
+
+       {% else %}
+              <p class="phl">
+              Education
+              </p><br>
+              <p class="p1l">
+              BABES BOLYAI UNIVERSITY, CLUJ-NAPOCA ( RO )
+              </p>
+              <p class="p1l">
+              October 2014 to July 2016<br>
+              Masters Degree within the Clinical Psychology Department<br>
+              Faculty of Psychology and Education Sciences<br>
+              Title of Master's program: Psychological techniques for behavior control and development of human potential<br>
+              </p><br>
+              <p class="p1l">
+              BABES BOLYAI UNIVERSITY, CLUJ-NAPOCA ( RO )
+              </p>
+              <p class="p1l">
+              October 2011 to July 2014<br>
+              Bachelor degree in Psychology within the Psychology Department<br>
+              Faculty of Psychology and Education Sciences
+              </p><br>
+       {% endif %}
+{%endblock%}
+
+
+{%block xp%}
+       {% if mobile %}
+              <p class="mphl">
+              Experience
+              </p><br>
+              <p class="mp1l">
+              <u>Development Engineer @ ING Tech</u><br>
+              </p>
+              <p class="mp1s">
+              December 2021 to present<br>
+              ETL process development<br>
+              Data administration with SQL<br>
+              </p><br>
+              <p class="mp1l">
+              <u>IT Data Analytics Developer @ Emerson Commercial & Residential Solutions</u><br>
+              </p>
+              <p class="mp1s">
+              January 2020 to December 2021<br>
+              Heavily involved in the development and launch of three Hyperion Cloud PBCS environments with multiple complex applications in each environment.<br>
+              Heavily involved in data migration from old OnPremise solution to the cloud application and responsible with maintaing data integrity during migration.<br>
+              Responsible with debuging, reviewing, building and maintaining complex ETL processes that transfer and transform data used in MS SQL databases, SnowFlake and Hyperion PBCS.<br>
+              Involved in data maintanance automatization and process improvement with Microsoft Azure,Python and BluePrism.<br>
+              </p><br>
+              <p class="mp1l">
+              <u>Business Analyst @ Bombardier Transportation</u><br>
+              </p>
+              <p class="mp1s">
+              September 2015 to August 2016 / September 2017 to January 2020<br>
+              Headcount data integrity and consisstency evaluation and maintanance, data reporting and visualization.<br>
+              </p><br>
+              <p class="mp1l">
+              <u>HR/Payroll Admin @ Bombardier Transportation</u><br>
+              </p>
+              <p class="mp1s">
+              July 2012 to August 2015<br>
+              Headcount & Payroll reporting,Data maintanance & validation.<br>
+              </p><br>
+
+       {% else %}
+              <p class="phl">
+              Experience
+              </p><br>
+              <p class="p1l">
+              <u>Development Engineer @ ING Tech</u><br>
+              </p>
+              <p class="p1s">
+              December 2021 to present<br>
+              ETL process development<br>
+              Data administration with SQL<br>
+              </p><br>
+              <p class="p1l">
+              <u>IT Data Analytics Developer @ Emerson Commercial & Residential Solutions</u><br>
+              </p>
+              <p class="p1s">
+              January 2020 to December 2021<br>
+              Heavily involved in the development and launch of three Hyperion Cloud PBCS environments with multiple complex applications in each environment.<br>
+              Heavily involved in data migration from old OnPremise solution to the cloud application and responsible with maintaing data integrity during migration.<br>
+              Responsible with debuging, reviewing, building and maintaining complex ETL processes that transfer and transform data used in MS SQL databases, SnowFlake and Hyperion PBCS.<br>
+              Involved in data maintanance automatization and process improvement with Microsoft Azure,Python and BluePrism.<br>
+              </p><br>
+              <p class="p1l">
+              <u>Business Analyst @ Bombardier Transportation</u><br>
+              </p>
+              <p class="p1s">
+              September 2015 to August 2016 / September 2017 to January 2020<br>
+              Headcount data integrity and consisstency evaluation and maintanance, data reporting and visualization.<br>
+              </p><br>
+              <p class="p1l">
+              <u>HR/Payroll Admin @ Bombardier Transportation</u><br>
+              </p>
+              <p class="p1s">
+              July 2012 to August 2015<br>
+              Headcount & Payroll reporting,Data maintanance & validation.<br>
+              </p><br>
+       {% endif %}
+{%endblock%}
+
+
+
+{%block co2%}
+
+       <div class="sub1_pos5I_alt" margin:0="" auto;="">
+              <div class="sub1_pos5I_inner_alt" margin:0="" auto;="">
+                     <div>
+                     {% if mobile %}
+                     <p class="mphl"><b>CO2 emissions</b></p>
+                     {% else %}
+                     <p class="phl"><b>CO2 emissions</b></p>
+                     {% endif %}
+                     <form method="post" enctype="multipart/form-data">{% csrf_token %}
+                            <table >
+                                   {% for field in co2_form %}
+              
+                                   <tr>
+                                   <td>
+                                          {{ field }}
+                                          {{ co2_form.media }}
+                                   </td>
+                                   </tr>
+                                   {% endfor %}       
+              
+                     
+              
+                     
+                                   </table>
+                            <hr/>
+                            {% if request.user.is_superuser %}
+                                   {% if mobile %}
+                                   <input type="submit" value="Send" name="co2_form" class="mastextgold" />
+                                   {% else %}
+                                   <input type="submit" value="Send" name="co2_form" class="astextgold" />
+                                   {% endif %}
+                            {% endif %}
+                            
+                     </form>
+                     {% if request.user.is_superuser %}
+                            <form method="post" enctype="multipart/form-data">{% csrf_token %}
+                                   {% if mobile %}
+                                   <input type="submit" value="Generate Report" name="co2_gen" class="mastextgold" /><br>
+                                   {% else %}
+                                   <input type="submit" value="Generate Report" name="co2_gen" class="astextgold" /><br>
+                                   {% endif %}
+                            </form>
+                     {% else %}
+                     <div id="chartContainer" style="width: 100%;min-width: 520px; height: 360px;"></div>
+                     {% endif %}
+                     </div>
+              </div>
+       </div>
+
+
+{%endblock%}

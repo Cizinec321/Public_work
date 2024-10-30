@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
+
+
+
+        {%block script%}
+        {%endblock%}
+        {%block chart_script%}
+        {%endblock%}
+
+
+<title>Matei Velich</title>
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+<meta name="Matei Velich" content="Matei Velich personal site">
+</head><body style="background-color:white;" data-new-gr-c-s-check-loaded="14.1045.0" data-gr-ext-installed="">
+        {% load static %}
+        <style>
+
+                .sunny .ui-widget-header {
+                color: black!important;}
+
+        </style>
+        <link rel='stylesheet' href="{% static 'main_library_alt.css'%}">
+
+        <div class="posmenu" margin:0>
+
+                <div class="dropdown">
+
+                        {%block login_div%}
+                        {%endblock%}
+                       
+
+                </div>
+
+        </div>
+
+        <div class="meta" margin:0>
+                {%block comm_div%}
+                {%endblock%}
+                {%block menu_div%}
+                {%endblock%}
+
+
+               
+
+                <div id="register" class="dropdown-content-form" style="display:none">
+
+
+
+
+
+
+
+                </div>
+
+                <div class="main" margin:0 onclick="document.getElementById('menubtn').className='dropdown-menu'";>
+                        <div class="about_show" id="about" margin:0 onclick="document.getElementById('menubtn').className='dropdown-menu'";>
+                                {%block about%}
+                                {%endblock%}
+
+
+
+                        </div>
+                        <div class="edu" id="edu" margin:0 onclick="document.getElementById('menubtn').className='dropdown-menu'">
+                                {%block edu%}
+                                {%endblock%}
+
+                        </div>
+                        <div class="xp" id="xp" margin:0 onclick="document.getElementById('menubtn').className='dropdown-menu'">
+                                {%block xp%}
+                                {%endblock%}
+
+                        </div>
+                        <div class="contact" id="contact" margin:0 onclick="document.getElementById('menubtn').className='dropdown-menu'">
+                                {%block registerdiv%}
+                                {%endblock%}
+        
+
+                        </div>
+                        <div class="steamapi" id="steamapi" margin:0 onclick="document.getElementById('menubtn').className='dropdown-menu'">
+                                {%block steamapi%}
+                                {%endblock%}       
+
+                        </div>
+                        <div class="co2" id="co2" margin:0 onclick="document.getElementById('menubtn').className='dropdown-menu'">
+                                {%block co2%}
+                                {%endblock%}
+        
+
+                        </div>
+
+                </div>
+  
+        </div>
+
+
+
+</body><grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration></html>
