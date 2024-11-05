@@ -1,0 +1,173 @@
+{%extends 'default.html'%}
+{%block script%}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> 
+       {% autoescape off %}
+       {{scrolltrigger}}
+       {% endautoescape %}
+       
+<script>
+              function hideall_except(exc) {
+
+                     if(exc!='aboutus'){document.getElementById('aboutus').className='main_hidetxt'};
+                     if(exc!='aboutyou'){document.getElementById('aboutyou').className='main_hidetxt'};
+                     if(exc!='contact'){document.getElementById('contact').className='main_hidetxt'};
+                     if(exc!='login'){document.getElementById('login').className='dropbtn2'};
+                     if(exc!='register'){document.getElementById('register').className='dropbtn2'};
+                     if(exc!='pos1'){document.getElementById('pos1').className='pos1'};
+                     if(exc!='seating'){if (document.getElementById('seating').className=='dropbtn2_show'){document.getElementById('seating').className='dropbtn2'};if (document.getElementById('seating').className=='dropbtn2_alt_show'){document.getElementById('seating').className='dropbtn2_alt'}};
+              }
+
+              function hide_current(incl) {
+                     document.getElementById(incl).className='dropbtn2'
+              }
+
+              function hidealluser() {
+                     const elements = document.querySelectorAll('[id*=utiz]');
+                     for (let i = 0; i < elements.length; i++) {
+                     elements[i].className='dropbtn2';                                  
+                     }
+              }
+              function hideallseating() {
+                     const elements = document.querySelectorAll('[id*=seating]');
+                     for (let i = 0; i < elements.length; i++) {
+                     if (elements[i].className=='dropbtn2_show'){elements[i].className='dropbtn2'};                                  
+                     }
+              }
+
+</script>
+
+
+
+{%endblock%}
+
+
+
+{%block div1%}
+{% if language == "EN" %}
+       <button  class="icon-about1EN" type="button" onclick="hideall_except('aboutus');hidealluser();hideallseating();if (document.getElementById('aboutus').className=='main_hidetxt'){document.getElementById('aboutus').className='main_showtxt'}";></button>
+       <button  class="icon-education1EN" type="button" onclick="hideall_except('aboutyou');hidealluser();hideallseating();if (document.getElementById('aboutyou').className=='main_hidetxt'){document.getElementById('aboutyou').className='main_showtxt'}";></button>
+       <button  class="icon-contact1nlEN" type="button" onclick="hideall_except('contact');hidealluser();hideallseating();if (document.getElementById('contact').className=='main_hidetxt'){document.getElementById('contact').className='main_showtxt'}";></button>
+       <button  class="icon-xp2EN" type="button" onclick="hideall_except('seating');hidealluser();hideallseating();if (document.getElementById('seating').className=='dropbtn2'){document.getElementById('seating').className='dropbtn2_show'};if (document.getElementById('seating').className=='dropbtn2_alt'){document.getElementById('seating').className='dropbtn2_alt_show'}";></button>
+       <form method="post"  name="logout_request"><button  class="icon-nu1EN" type="submit" name="logout_request" value="1" ></button></form>
+       <button  class="icon-nu3EN" type="button" onclick="hideall_except('register');hidealluser();hideallseating();if (document.getElementById('register').className=='dropbtn2'){document.getElementById('register').className='dropbtn2_show'}";></button>
+       <button  class="icon-show_mob" type="button" onclick="if (document.getElementById('pos1').className=='pos1'){document.getElementById('pos1').className='pos1_show'}else{document.getElementById('pos1').className='pos1'}";></button>
+{% else %}
+       <button  class="icon-about1" type="button" onclick="hideall_except('aboutus');hidealluser();hideallseating();if (document.getElementById('aboutus').className=='main_hidetxt'){document.getElementById('aboutus').className='main_showtxt'}";></button>
+       <button  class="icon-education1" type="button" onclick="hideall_except('aboutyou');hidealluser();hideallseating();if (document.getElementById('aboutyou').className=='main_hidetxt'){document.getElementById('aboutyou').className='main_showtxt'}";></button>
+       <button  class="icon-contact1nl" type="button" onclick="hideall_except('contact');hidealluser();hideallseating();if (document.getElementById('contact').className=='main_hidetxt'){document.getElementById('contact').className='main_showtxt'}";></button>
+       <button  class="icon-xp2" type="button" onclick="hideall_except('seating');hidealluser();hideallseating();if (document.getElementById('seating').className=='dropbtn2'){document.getElementById('seating').className='dropbtn2_show'};if (document.getElementById('seating').className=='dropbtn2_alt'){document.getElementById('seating').className='dropbtn2_alt_show'}";></button>
+       <form method="post"  name="logout_request"><button  class="icon-nu1" type="submit" name="logout_request" value="1" ></button></form>
+       <button  class="icon-nu3" type="button" onclick="hideall_except('register');hidealluser();hideallseating();if (document.getElementById('register').className=='dropbtn2'){document.getElementById('register').className='dropbtn2_show'}";></button>
+       <button  class="icon-show_mob" type="button" onclick="if (document.getElementById('pos1').className=='pos1'){document.getElementById('pos1').className='pos1_show'}else{document.getElementById('pos1').className='pos1'}";></button>
+       {% endif %}
+
+
+{%endblock%}
+
+
+
+
+
+
+{%block div2%}
+
+       {% autoescape off %}
+
+       {{form_wrapper_start}}
+       {% csrf_token %}
+       {{click_form_login}}
+       {{click_check_div2}}
+       {{click_form.UN}}
+       {{click_form.HAP}}
+       {{form_wrapper_end}}
+
+       {{registerform_wrapper_start}}
+       {% csrf_token %}
+       {{click_form_register}}
+       {% endautoescape %}
+       {% autoescape on %}   
+       {% if request.user.is_superuser %}
+       <tr><th></th><th><button type="submit" class="pos_button2" name="save_participant" value="1" >Salvare</button></th><td></td></tr></table></form>
+       {% else %}
+       {% endif %}
+       {% endautoescape %}
+       {% autoescape off %}
+       {{click_ee_list}}
+       {% autoescape on %} 
+       </div>
+       {% endautoescape %}
+       
+
+       {% endautoescape %}
+
+           
+       {% for form in seat_handling_form %}
+       {% csrf_token %}
+       {% autoescape on %}       
+       <div class='dropbtn2' id="{{ forloop.counter0 }}seating"><form method='post'  name='login_request'><table style='width:100%'>       
+       {{ form.as_p }}
+       {% if language == "EN" %}
+       <button  class='pos_button2' type='button' onclick='hide_current("{{ forloop.counter0 }}seating")';>Close</button>
+       {% else %}
+       <button  class='pos_button2' type='button' onclick='hide_current("{{ forloop.counter0 }}seating")';>Închide</button>
+       {% endif %}
+       {% endautoescape %}
+       {% autoescape off %} 
+       {% if request.user.is_superuser %}      
+       {{form_wrapper_end}}
+       {% else %}
+       {{form_wrapper_end_non_su}}
+       {% endif %}
+       {% endautoescape %}
+       {%endfor%}
+
+       {% for form in invitees_handling_form %}
+       {% csrf_token %}
+       {% autoescape on %} 
+       <div class='dropbtn2' id="{{ forloop.counter0 }}utiz"><form method='post'  name='login_request' class='stf'><table style='width:100%'> 
+       {{ form.as_p }}
+       {% if language == "EN" %}
+       <tr><th></th><th><button type="submit" class="pos_button2" name="inv_save" value="1" >Save </button></th><td></td></tr></table></form></div>
+       {% else %}
+       <tr><th></th><th><button type="submit" class="pos_button2" name="inv_save" value="1" ><p class="smf_pref_lb">Salvare </p></button></th><td></td></tr></table></form></div>
+       {% endif %}
+       {% endautoescape %}
+       {% autoescape off %}       
+       {% endautoescape %}
+       {%endfor%}
+     
+
+
+{%endblock%}
+
+{%block div3%}
+
+       {% autoescape off %}
+       {% csrf_token %}
+       {{click_check_div3}}
+       {% endautoescape %}
+
+{%endblock%}
+
+
+{%block div4%}
+
+       {% autoescape off %}
+
+       {{form_wrapper_start}}
+       {% csrf_token %}
+       {{click_form_login}}
+       {{click_check_div2}}
+       {{click_form.UN}}
+       {{click_form.HAP}}
+       {{form_wrapper_end}}
+
+       {{seatingform_wrapper_start}}
+       {% csrf_token %}
+       {{click_form_seating}}
+       {{seatingform_wrapper_end}}
+
+
+       {% endautoescape %}
+{%endblock%}
