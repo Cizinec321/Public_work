@@ -1,22 +1,25 @@
 <!DOCTYPE html>
 
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
+<title>Matei Velich</title>
+</head>
 
-
+<body style="background-color:white;" data-new-gr-c-s-check-loaded="14.1045.0" data-gr-ext-installed="">
 
         {%block script%}
         {%endblock%}
         {%block chart_script%}
         {%endblock%}
 
+        {% load bootstrap4 %}
+        {% bootstrap_css %}
+        {% bootstrap_javascript jquery='full' %}
 
-<title>Matei Velich</title>
-{% load bootstrap4 %}
-{% bootstrap_css %}
-{% bootstrap_javascript jquery='full' %}
-<meta name="Matei Velich" content="Matei Velich personal site">
-</head><body style="background-color:white;" data-new-gr-c-s-check-loaded="14.1045.0" data-gr-ext-installed="">
         {% load static %}
         <style>
 
@@ -99,4 +102,4 @@
 
 
 
-</body><grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration></html>
+</body>
