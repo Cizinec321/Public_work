@@ -1,7 +1,7 @@
 from django.db import models
-from django.contrib.auth.models import User, Group
+from rest_framework import serializers
 import datetime
-
+from rest_framework import generics, permissions
 
 
 
@@ -75,3 +75,38 @@ class co_rolling_log(models.Model):
     month=models.IntegerField()
     item_name=models.CharField(max_length=250)
     quantity=models.IntegerField()
+
+
+
+
+class co2_log_Serializer(serializers.ModelSerializer):
+    class Meta:
+        model = co2_log
+        fields = '__all__'
+        
+class co2_rolling_log_Serializer(serializers.ModelSerializer):
+    class Meta:
+        model = co_rolling_log
+        fields = '__all__'
+
+class co2_items_list_Serializer(serializers.ModelSerializer):
+    class Meta:
+        model = co2_items_list
+        fields = '__all__'
+        
+        
+
+class co2_log_ListView(generics.ListAPIView):
+    queryset = co2_log.objects.all()
+    serializer_class = co2_log_Serializer
+    http_method_names = ['get']
+    
+class co2_rolling_log_ListView(generics.ListAPIView):
+    queryset = co_rolling_log.objects.all()
+    serializer_class = co2_rolling_log_Serializer
+    http_method_names = ['get']
+    
+class co2_items_list_ListView(generics.ListAPIView):
+    queryset = co2_items_list.objects.all()
+    serializer_class = co2_items_list_Serializer
+    http_method_names = ['get']

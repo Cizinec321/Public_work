@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     'django_flatpickr',
     'bootstrap4',
     'rest_framework',
-    'b_classes'
+    'b_classes',
 ]
 
 MIDDLEWARE = [
@@ -157,3 +157,14 @@ EMAIL_PORT='587'
 EMAIL_HOST_USER='velich.eduard@gmail.com'
 EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
 EMAIL_USE_TLS   = True
+
+
+#REST settings
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+    ],
+}
