@@ -466,32 +466,59 @@
                             </form>
                      {% else %}
                      <div id="chartContainer" style="width: 100%;min-width: 520px; height: 360px;"></div>
-                     <p class="phl"><b>About this report</b></p>
+                            {% if mobile %}
+                            <p class="mphl"><b>About this report</b></p>
 
-                     <p class="p1s">
-                            On a monthly basis I log my consumption in the generaly accepted unit of energy for each category: <br>
-                            LPG - measured in liters<br>
-                            Gasoline - measured in liters<br>
-                            Electricity for ap. 8 - measured in KWh<br>
-                            Electricity for ap. 20 - measured in KWh<br>
-                            Gas for ap. 8 - measured in cubic meters<br>
-                            Gas for ap. 20 - measured in cubic meters<br>
-                            Work flights - measured in grams<br>
-                            Leisure flights - measured in grams<br>
-                     </p><br><br>
-                     <p class="p1s">
-                            Each unit is converted to grams of CO2 based on a list with CO2 gramse per unit:<br>
-                            LPG - calculated according to car manual based on average consumption per 100km and average CO2 per 100km. This is calculated at 1620grams per liter.<br>
-                            Gasoline - calculated according to car manual based on average consumption per 100km and average CO2 per 100km. This is calculated at 2260grams per liter.<br>
-                            Electricity - according to electricity provider - printed on monthly statement. This is calculated at 269grams per KWh.<br>
-                            Gas  - According to internet. Browsed multiple sites, used most cited value. This is estimate at 1600grams per cubic meter.<br>
-                            Flights - according to statement on flight ticket. This is 1-to-1 with the CO2 emissions printed on the ticket.<br>
-                     </p><br><br>
-                     <p class="p1s">
-                            You can get raw data for monthly consumption via endpoint /api/co2_log/<br>
-                            You can get raw data for monthly rolling consumption for electricity and gas via endpoint /api/co2_rolling_log/<br>
-                     </p>
+                            <p class="mp1s">
+                                   On a monthly basis I log my consumption in the generaly accepted unit of energy for each category: <br>
+                                   LPG - measured in liters<br>
+                                   Gasoline - measured in liters<br>
+                                   Electricity for ap. 8 - measured in KWh<br>
+                                   Electricity for ap. 20 - measured in KWh<br>
+                                   Gas for ap. 8 - measured in cubic meters<br>
+                                   Gas for ap. 20 - measured in cubic meters<br>
+                                   Work flights - measured in grams<br>
+                                   Leisure flights - measured in grams<br>
+                            </p><br><br>
+                            <p class="mp1s">
+                                   Each unit is converted to grams of CO2 based on a list with CO2 gramse per unit:<br>
+                                   LPG - calculated according to car manual based on average consumption per 100km and average CO2 per 100km. This is calculated at 1620grams per liter.<br>
+                                   Gasoline - calculated according to car manual based on average consumption per 100km and average CO2 per 100km. This is calculated at 2260grams per liter.<br>
+                                   Electricity - according to electricity provider - printed on monthly statement. This is calculated at 269grams per KWh.<br>
+                                   Gas  - According to internet. Browsed multiple sites, used most cited value. This is estimate at 1600grams per cubic meter.<br>
+                                   Flights - according to statement on flight ticket. This is 1-to-1 with the CO2 emissions printed on the ticket.<br>
+                            </p><br><br>
+                            <p class="mp1s">
+                                   You can get raw data for monthly consumption via endpoint /api/co2_log/<br>
+                                   You can get raw data for monthly rolling consumption for electricity and gas via endpoint /api/co2_rolling_log/<br>
+                            </p>
+                            {% else %}
+                            <p class="phl"><b>About this report</b></p>
 
+                            <p class="p1s">
+                                   On a monthly basis I log my consumption in the generaly accepted unit of energy for each category: <br>
+                                   LPG - measured in liters<br>
+                                   Gasoline - measured in liters<br>
+                                   Electricity for ap. 8 - measured in KWh<br>
+                                   Electricity for ap. 20 - measured in KWh<br>
+                                   Gas for ap. 8 - measured in cubic meters<br>
+                                   Gas for ap. 20 - measured in cubic meters<br>
+                                   Work flights - measured in grams<br>
+                                   Leisure flights - measured in grams<br>
+                            </p><br><br>
+                            <p class="p1s">
+                                   Each unit is converted to grams of CO2 based on a list with CO2 gramse per unit:<br>
+                                   LPG - calculated according to car manual based on average consumption per 100km and average CO2 per 100km. This is calculated at 1620grams per liter.<br>
+                                   Gasoline - calculated according to car manual based on average consumption per 100km and average CO2 per 100km. This is calculated at 2260grams per liter.<br>
+                                   Electricity - according to electricity provider - printed on monthly statement. This is calculated at 269grams per KWh.<br>
+                                   Gas  - According to internet. Browsed multiple sites, used most cited value. This is estimate at 1600grams per cubic meter.<br>
+                                   Flights - according to statement on flight ticket. This is 1-to-1 with the CO2 emissions printed on the ticket.<br>
+                            </p><br><br>
+                            <p class="p1s">
+                                   You can get raw data for monthly consumption via endpoint /api/co2_log/<br>
+                                   You can get raw data for monthly rolling consumption for electricity and gas via endpoint /api/co2_rolling_log/<br>
+                            </p>
+                            {% endif %}
                      {% endif %}
                      </div>
               </div>
