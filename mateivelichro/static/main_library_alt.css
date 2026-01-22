@@ -479,6 +479,57 @@ position: absolute;
   transition: all 0.5s ease;
 
 }
+.co2{
+  background-color:  transparent;
+  height:100%;
+  width:100%;
+  right:-100%;
+  top:0%;
+  overflow-y:auto;
+  position: absolute;
+  overflow-x: hidden;
+  transition: all 0.5s ease;
+}
+
+
+.co2_show{
+  background-color:  transparent;
+  height:100%;
+  width:100%;
+  right:0%;
+  top:0%;
+  overflow-y:auto;
+  position: absolute;
+  overflow-x: hidden;
+  transition: all 0.5s ease;
+
+} 
+
+.deforest{
+  background-color:  transparent;
+  height:100%;
+  width:100%;
+  right:-100%;
+  top:0%;
+  overflow-y:auto;
+  position: absolute;
+  overflow-x: hidden;
+  transition: all 0.5s ease;
+}
+
+
+.deforest_show{
+  background-color:  transparent;
+  height:100%;
+  width:100%;
+  right:0%;
+  top:0%;
+  overflow-y:auto;
+  position: absolute;
+  overflow-x: hidden;
+  transition: all 0.5s ease;
+
+}
 
   .dropdown-menu {
     position: relative;

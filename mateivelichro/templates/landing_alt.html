@@ -17,6 +17,7 @@
                      if(exc!='contact'){document.getElementById('contact').className='contact'};
                      if(exc!='steamapi'){document.getElementById('steamapi').className='steamapi'};
                      if(exc!='co2'){document.getElementById('co2').className='co2'};
+                     if(exc!='deforest'){document.getElementById('deforest').className='deforest'};
               }
               
 
@@ -146,7 +147,8 @@
               <button class="m_astext" type="button" onclick="hideall_except('contact');if (document.getElementById('contact').className=='contact'){document.getElementById('contact').className='contact_show'}">Contact</button><br>
               <button class="m_astext" type="button" onclick="hideall_except('steamapi');if (document.getElementById('steamapi').className=='steamapi'){document.getElementById('steamapi').className='steamapi_show'}">Hobies</button><br>
               <button class="m_astext" type="button" onclick="hideall_except('co2');if (document.getElementById('co2').className=='co2'){document.getElementById('co2').className='co2_show'}">Household CO2</button><br>
-       
+              <button class="m_astext" type="button" onclick="hideall_except('deforest');if (document.getElementById('deforest').className=='deforest'){document.getElementById('deforest').className='deforest_show'}">Deforestation watch</button><br>
+
        {% else %}
               <div id="menubtn" class="dropdown-menu">
               <button class="astext" type="button" onclick="hideall_except('about');if (document.getElementById('about').className=='about'){document.getElementById('about').className='about_show'}">About Me</button><br>
@@ -155,7 +157,8 @@
               <button class="astext" type="button" onclick="hideall_except('contact');if (document.getElementById('contact').className=='contact'){document.getElementById('contact').className='contact_show'}">Contact</button><br>
               <button class="astext" type="button" onclick="hideall_except('steamapi');if (document.getElementById('steamapi').className=='steamapi'){document.getElementById('steamapi').className='steamapi_show'}">Hobies</button><br>
               <button class="astext" type="button" onclick="hideall_except('co2');if (document.getElementById('co2').className=='co2'){document.getElementById('co2').className='co2_show'}">Household CO2</button><br>
-       
+              <button class="astext" type="button" onclick="hideall_except('deforest');if (document.getElementById('deforest').className=='deforest'){document.getElementById('deforest').className='deforest_show'}">Deforestation watch</button><br>
+
        {% endif %}
        {% endautoescape %}
  
@@ -304,6 +307,64 @@
               October 2011 to July 2014<br>
               Bachelor degree in Psychology within the Psychology Department<br>
               Faculty of Psychology and Education Sciences
+              </p><br>
+       {% endif %}
+{%endblock%}
+
+{%block deforest%}
+       {% if mobile %}
+              <p class="mphl">
+              Lorem Ipsum
+              </p><br>
+              <p class="mp1l">
+              The standard Lorem Ipsum passage
+              </p>
+              <p class="mp1l">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit,<br> 
+              sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<br>
+              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi<br>
+               ut aliquip ex ea commodo consequat. <br>
+              Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. <br>
+              Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br>
+              </p><br>
+              <p class="mp1l">
+              The standard Lorem Ipsum passage
+              </p>
+              <p class="mp1l">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit,<br> 
+              sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<br>
+              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi<br>
+               ut aliquip ex ea commodo consequat. <br>
+              Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. <br>
+              Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br>
+              </p><br>
+
+
+       {% else %}
+              <p class="phl">
+              Lorem Ipsum
+              </p><br>
+              <p class="p1l">
+              The standard Lorem Ipsum passage
+              </p>
+              <p class="p1l">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit,<br> 
+              sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<br>
+              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi<br>
+               ut aliquip ex ea commodo consequat. <br>
+              Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. <br>
+              Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br>
+              </p><br>
+              <p class="p1l">
+              The standard Lorem Ipsum passage
+              </p>
+              <p class="p1l">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit,<br> 
+              sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<br>
+              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi<br>
+               ut aliquip ex ea commodo consequat. <br>
+              Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. <br>
+              Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br>
               </p><br>
        {% endif %}
 {%endblock%}
