@@ -15,13 +15,13 @@ import os
 import dotenv # <- New
 
 
-    
-    
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Add .env variables anywhere before SECRET_KEY
-dotenv_file = os.path.join("E:\Archive", ".env")
+dotenv_file = os.path.join(BASE_DIR, ".env")
 if os.path.isfile(dotenv_file):
     dotenv.load_dotenv(dotenv_file)
 
@@ -34,7 +34,7 @@ SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.1.122','www.mateivelich.ro','localhost']
+ALLOWED_HOSTS = ['192.168.1.146','www.mateivelich.ro','localhost']
 
 # Application definition
 
@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     'django_flatpickr',
     'bootstrap4',
     'rest_framework',
-    'b_classes',
+    'b_classes'
 ]
 
 MIDDLEWARE = [
@@ -136,7 +136,7 @@ STATIC_URL = '/static/'
 MEDIA_ROOT =  os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "static"),
+    BASE_DIR / "static",
 )
 
 # Default primary key field type
@@ -157,14 +157,3 @@ EMAIL_PORT='587'
 EMAIL_HOST_USER='velich.eduard@gmail.com'
 EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
 EMAIL_USE_TLS   = True
-
-
-#REST settings
-REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny',
-    ],
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.BasicAuthentication',
-    ],
-}

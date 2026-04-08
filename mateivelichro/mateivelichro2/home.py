@@ -1,18 +1,23 @@
 from django.shortcuts import render
+
+import copsci
 from . import forms, models
 import b_classes
 from django.core.mail import send_mail
 import requests
 import json
 import os
-
+from datetime import datetime
+from django.conf import settings
+import cv2
 
 #GLOBAL VARIABLES read from os variables as passed parameters
 STEAM_KEY= os.environ['STEAM_KEY']
 STEAM_ID= os.environ['STEAM_ID']
 GITHUB_AUTHORIZATION= os.environ['GITHUB_AUTHORIZATION']
 ITEMS_LIST=['LPG','Gasoline','Elec_ap8','Elec_ap20','Gas_ap8','Gas_ap20','Work_flight','Leisure_flight']
-
+COP_KEY= os.environ['COP_KEY']
+COP_ID= os.environ['COP_ID']
 
 
 
@@ -52,7 +57,14 @@ def gen_steam_plate():
           out_html=''
 
     return out_html
-
+#test if inout value is valid date
+def is_valid_date(date_str):
+    try:
+        # This checks both format AND if the date actually exists
+        datetime.strptime(date_str, '%Y-%m-%d')
+        return True
+    except ValueError:
+        return False
 # this function reads github API and returns data in a specific, usable format to print in 
 def gen_github_plate():
     
@@ -84,7 +96,6 @@ def gen_github_plate():
 # =============  H  O  M  E  =============  
 def home(request):
     agent = request.META["HTTP_USER_AGENT"]
-    
     #default to non-mobile
     mobile=False
     comm_content_class='comm-content'
@@ -199,6 +210,19 @@ def home(request):
                                 co2_inst.item_name=co2_form.cleaned_data['item_name']                        
                                 co2_inst.quantity=co2_form.cleaned_data['quantity']
                                 co2_inst.save()
+                    if request.POST.get("deforest_gen"):
+                        full_date = request.POST.get('Full_date')
+                        if is_valid_date(full_date):
+                            try:
+                                image_comparison_test=copsci.copsci('test name', COP_ID,COP_KEY,full_date)
+                                cv2.imwrite(os.path.join(settings.BASE_DIR, 'static', 'deforestation_gen.png'), image_comparison_test.diff_img)
+                                cv2.imwrite(os.path.join(settings.BASE_DIR, 'static', 'deforestation_old.png') , image_comparison_test.old_image)
+
+                            except:
+                                print("Error generating deforestation image")
+                        else:
+                            print("Invalid date format")
+                        
 
 
     # Generic return

@@ -4,11 +4,11 @@
 
 {%block script%}
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
        {% autoescape off %}
        {{scrolltrigger}}
        {% endautoescape %}
-       
+
 <script>
               function hideall_except(exc) {
                      if(exc!='about'){document.getElementById('about').className='about'};
@@ -19,16 +19,141 @@
                      if(exc!='co2'){document.getElementById('co2').className='co2'};
                      if(exc!='deforest'){document.getElementById('deforest').className='deforest'};
               }
-              
+
 
 </script>
 
+<script>
+       document.addEventListener('DOMContentLoaded', function() {
+              const image_gen = document.getElementById('deforest-gen')
+              const image_old = document.getElementById('deforest-old');
+              if (!image_gen || !image_old) return;
 
+              image_gen.style.position = 'absolute';
+              image_gen.style.right = image_gen.style.right || '0px';
+              image_gen.style.top = image_gen.style.top || '0px';
+              image_gen.style.cursor = 'grab';
+
+              
+              image_old.style.position = 'absolute';
+              image_old.style.right = image_old.style.right || '0px';
+              image_old.style.top = image_old.style.top || '0px';
+              image_old.style.cursor = 'grab';
+
+              let dragging = false;
+              let startX = 0;
+              let startY = 0;
+              let startLeft = 0;
+              let startTop = 0;
+
+              image_gen.addEventListener('mousedown', function(event) {
+              dragging = true;
+              image_gen.style.cursor = 'grabbing';
+              startX = event.clientX;
+              startY = event.clientY;
+              startRight = parseFloat(image_gen.style.right) || 0;
+              startTop = parseFloat(image_gen.style.top) || 0;
+              event.preventDefault();
+              });
+              image_old.addEventListener('mousedown', function(event) {
+              dragging = true;
+              image_old.style.cursor = 'grabbing';
+              startX = event.clientX;
+              startY = event.clientY;
+              startRight = parseFloat(image_old.style.right) || 0;
+              startTop = parseFloat(image_old.style.top) || 0;
+              event.preventDefault();
+              });
+
+              document.addEventListener('mousemove', function(event) {
+              if (!dragging) return;
+              const dx = event.clientX - startX;
+              const dy = event.clientY - startY;
+              image_gen.style.right = (startRight - dx) + 'px';
+              image_gen.style.top = (startTop + dy) + 'px';
+              image_old.style.right = (startRight - dx) + 'px';
+              image_old.style.top = (startTop + dy) + 'px';       
+
+              });
+
+              document.addEventListener('mouseup', function() {
+
+
+
+
+              image_gen.addEventListener('touchstart', function(event) {
+              dragging = true;
+              startX = event.touches[0].clientX;
+              startY = event.touches[0].clientY;
+              startRight = parseFloat(image_gen.style.right) || 0;
+              startTop = parseFloat(image_gen.style.top) || 0;
+              event.preventDefault();
+              });
+
+              image_old.addEventListener('touchstart', function(event) {
+              dragging = true;
+              startX = event.touches[0].clientX;
+              startY = event.touches[0].clientY;
+              startRight = parseFloat(image_old.style.right) || 0;
+              startTop = parseFloat(image_old.style.top) || 0;
+              event.preventDefault();
+              });
+
+              image_old.addEventListener('touchmove', function(event) {       
+                     if (!dragging) return;
+                     const dx = event.touches[0].clientX - startX;
+                     const dy = event.touches[0].clientY - startY;
+                     image_gen.style.right = (startRight - dx) + 'px';
+                     image_gen.style.top = (startTop + dy) + 'px';
+                     image_old.style.right = (startRight - dx) + 'px';
+                     image_old.style.top = (startTop + dy) + 'px';
+                     event.preventDefault(); // Prevent scrolling while dragging
+              });
+
+
+              image_gen.addEventListener('touchmove', function(event) {       
+                     if (!dragging) return;
+                     const dx = event.touches[0].clientX - startX;
+                     const dy = event.touches[0].clientY - startY;
+                     image_gen.style.right = (startRight - dx) + 'px';
+                     image_gen.style.top = (startTop + dy) + 'px';
+                     image_old.style.right = (startRight - dx) + 'px';
+                     image_old.style.top = (startTop + dy) + 'px';
+                     event.preventDefault(); // Prevent scrolling while dragging
+              });
+
+
+
+              image_gen.addEventListener('touchend', function(event) 
+              
+              {
+                     if (!dragging) return;
+                     dragging = false;
+              });
+
+              image_old.addEventListener('touchend', function(event) 
+              
+              {
+                     if (!dragging) return;
+                     dragging = false;
+              });
+
+
+              if (!dragging) return;
+              dragging = false;
+              image_gen.style.cursor = 'grab';
+              image_old.style.cursor = 'grab';             
+   
+              });
+              });
+       
+</script>
 
 {%endblock%}
 
 
 {%block chart_script%}
+
 <script src="https://cdn.canvasjs.com/ga/canvasjs.min.js"></script>
 <script>
   window.onload = function () {
@@ -96,18 +221,20 @@
       }]
     });
     chart.render();
- 
+
     function hideUnhideDataSeries(e) {
       if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
         e.dataSeries.visible = false;
       } else {
         e.dataSeries.visible = true;
       }
- 
+
       e.chart.render();
     }
-  }
+  };
+
 </script>
+
 {%endblock%}
 
 {%block login_div%}
@@ -123,7 +250,7 @@
 
 {%block comm_div%}
        {% autoescape off %}
-       {{display_trigger_comm}}       
+       {{display_trigger_comm}}
        {{comm_msg}}
        <div style="bottom: 5px; text-align: right;padding-top:40px;">
        {% if mobile %}
@@ -148,7 +275,6 @@
               <button class="m_astext" type="button" onclick="hideall_except('steamapi');if (document.getElementById('steamapi').className=='steamapi'){document.getElementById('steamapi').className='steamapi_show'}">Hobies</button><br>
               <button class="m_astext" type="button" onclick="hideall_except('co2');if (document.getElementById('co2').className=='co2'){document.getElementById('co2').className='co2_show'}">Household CO2</button><br>
               <button class="m_astext" type="button" onclick="hideall_except('deforest');if (document.getElementById('deforest').className=='deforest'){document.getElementById('deforest').className='deforest_show'}">Deforestation watch</button><br>
-
        {% else %}
               <div id="menubtn" class="dropdown-menu">
               <button class="astext" type="button" onclick="hideall_except('about');if (document.getElementById('about').className=='about'){document.getElementById('about').className='about_show'}">About Me</button><br>
@@ -158,12 +284,11 @@
               <button class="astext" type="button" onclick="hideall_except('steamapi');if (document.getElementById('steamapi').className=='steamapi'){document.getElementById('steamapi').className='steamapi_show'}">Hobies</button><br>
               <button class="astext" type="button" onclick="hideall_except('co2');if (document.getElementById('co2').className=='co2'){document.getElementById('co2').className='co2_show'}">Household CO2</button><br>
               <button class="astext" type="button" onclick="hideall_except('deforest');if (document.getElementById('deforest').className=='deforest'){document.getElementById('deforest').className='deforest_show'}">Deforestation watch</button><br>
-
        {% endif %}
        {% endautoescape %}
- 
-   
-       
+
+
+
        </div>
        {% autoescape off %}
        {{extra_trigger}}
@@ -186,18 +311,18 @@
               <form method="post" enctype="multipart/form-data">{% csrf_token %}
                      <table >
                             {% for field in pers_data_form %}
-        
+
                             <tr>
                             <td>
                                    {{ field }}
                                    {{ pers_data_form.media }}
                             </td>
                             </tr>
-                            {% endfor %}       
-       
-                
-       
-                    
+                            {% endfor %}
+
+
+
+
                             </table>
                      <hr/>
                      {% if mobile %}
@@ -205,7 +330,7 @@
                      {% else %}
                      <input type="submit" value="Send" name="register_form" class="astextgold" /><br>
                      {% endif %}
-                     
+
               </form>
               </div>
        </div>
@@ -310,37 +435,14 @@
               </p><br>
        {% endif %}
 {%endblock%}
-
 {%block deforest%}
        {% if mobile %}
-              <p class="mphl">
-              Lorem Ipsum
-              </p><br>
-              <p class="mp1l">
-              The standard Lorem Ipsum passage
-              </p>
-              <p class="mp1l">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit,<br> 
-              sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<br>
-              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi<br>
-               ut aliquip ex ea commodo consequat. <br>
-              Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. <br>
-              Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br>
-              </p><br>
-              <p class="mp1l">
-              The standard Lorem Ipsum passage
-              </p>
-              <p class="mp1l">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit,<br> 
-              sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<br>
-              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi<br>
-               ut aliquip ex ea commodo consequat. <br>
-              Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. <br>
-              Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br>
-              </p><br>
-
-
-       {% else %}
+              <div class="image-container">
+              <img id="deforest-gen" src="static\deforestation_gen.png" class="deforest-image-new">
+              <img id="deforest-old" src="static\deforestation_old.png" class="deforest-image-old">
+              
+              <div class="text-container">  
+              <button id="toggle-btn" class="toggle-button"  onclick="if (document.getElementById('deforest-old').style.display=== 'none'){document.getElementById('deforest-old').style.position='absolute',document.getElementById('deforest-old').style.left='0px; top: 0px',document.getElementById('deforest-old').style.cursor='grab',document.getElementById('deforest-old').style.display=''}else{document.getElementById('deforest-old').style.display = 'none'}">Switch Version</button>      
               <p class="phl">
               Lorem Ipsum
               </p><br>
@@ -359,6 +461,47 @@
               The standard Lorem Ipsum passage
               </p>
               <p class="p1l">
+                            {% if request.user.is_superuser %}
+                                          <div>
+                                          {% if mobile %}
+                                          <p class="mphl"><b>Contact Form</b></p>
+                                          {% else %}
+                                          <p class="phl"><b>Contact Form</b></p>
+                                          {% endif %}
+                                          <form method="post" enctype="multipart/form-data">{% csrf_token %}
+                                                 <table >
+
+                                                        <input type="text" name="Full_date" maxlength="250" class="form_fields" placeholder="2025-06-29" required="" id="id_Full_Date">
+
+                                                 </table>
+                                                 <hr/>
+                                          {% if mobile %}
+                                          <input type="submit" value="Generate" name="deforest_gen" class="mastextgold" />
+                                          {% else %}
+                                          <input type="submit" value="Generate" name="deforest_gen" class="astextgold" />
+                                          {% endif %}
+
+                                          </form>
+                                          </div>
+                            {% endif %}
+              </p><br>
+              </div>
+              </div>
+
+       {% else %}
+              <div class="image-container">
+              <img id="deforest-gen" src="static\deforestation_gen.png" class="deforest-image-new">
+              <img id="deforest-old" src="static\deforestation_old.png" class="deforest-image-old">
+              
+              <div class="text-container">  
+              <button id="toggle-btn" class="toggle-button"  onclick="if (document.getElementById('deforest-old').style.display=== 'none'){document.getElementById('deforest-old').style.position='absolute',document.getElementById('deforest-old').style.left='0px; top: 0px',document.getElementById('deforest-old').style.cursor='grab',document.getElementById('deforest-old').style.display=''}else{document.getElementById('deforest-old').style.display = 'none'}">Switch Version</button>      
+              <p class="phl">
+              Lorem Ipsum
+              </p><br>
+              <p class="p1l">
+              The standard Lorem Ipsum passage
+              </p>
+              <p class="p1l">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit,<br> 
               sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<br>
               Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi<br>
@@ -366,9 +509,38 @@
               Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. <br>
               Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br>
               </p><br>
+              <p class="p1l">
+              The standard Lorem Ipsum passage
+              </p>
+              <p class="p1l">
+                            {% if request.user.is_superuser %}
+                                          <div>
+                                          {% if mobile %}
+                                          <p class="mphl"><b>Contact Form</b></p>
+                                          {% else %}
+                                          <p class="phl"><b>Contact Form</b></p>
+                                          {% endif %}
+                                          <form method="post" enctype="multipart/form-data">{% csrf_token %}
+                                                 <table >
+
+                                                        <input type="text" name="Full_date" maxlength="250" class="form_fields" placeholder="2025-06-29" required="" id="id_Full_Date">
+
+                                                 </table>
+                                                 <hr/>
+                                          {% if mobile %}
+                                          <input type="submit" value="Generate" name="deforest_gen" class="mastextgold" />
+                                          {% else %}
+                                          <input type="submit" value="Generate" name="deforest_gen" class="astextgold" />
+                                          {% endif %}
+
+                                          </form>
+                                          </div>
+                            {% endif %}
+              </p><br>
+              </div>
+              </div>
        {% endif %}
 {%endblock%}
-
 
 {%block xp%}
        {% if mobile %}
@@ -494,18 +666,18 @@
                      <form method="post" enctype="multipart/form-data">{% csrf_token %}
                             <table >
                                    {% for field in co2_form %}
-              
+
                                    <tr>
                                    <td>
                                           {{ field }}
                                           {{ co2_form.media }}
                                    </td>
                                    </tr>
-                                   {% endfor %}       
-              
-                     
-              
-                     
+                                   {% endfor %}
+
+
+
+
                                    </table>
                             <hr/>
                             {% if request.user.is_superuser %}
@@ -515,7 +687,7 @@
                                    <input type="submit" value="Send" name="co2_form" class="astextgold" />
                                    {% endif %}
                             {% endif %}
-                            
+
                      </form>
                      {% if request.user.is_superuser %}
                             <form method="post" enctype="multipart/form-data">{% csrf_token %}
@@ -542,7 +714,7 @@
                                    Leisure flights - measured in grams<br>
                             </p><br><br>
                             <p class="mp1s">
-                                   Each unit is converted to grams of CO2 based on a list with CO2 gramse per unit:<br>
+                                   Each unit is converted to grams of CO2 based on a list with CO2 grams per unit:<br>
                                    LPG - calculated according to car manual based on average consumption per 100km and average CO2 per 100km. This is calculated at 1620grams per liter.<br>
                                    Gasoline - calculated according to car manual based on average consumption per 100km and average CO2 per 100km. This is calculated at 2260grams per liter.<br>
                                    Electricity - according to electricity provider - printed on monthly statement. This is calculated at 269grams per KWh.<br>
@@ -568,7 +740,7 @@
                                    Leisure flights - measured in grams<br>
                             </p><br><br>
                             <p class="p1s">
-                                   Each unit is converted to grams of CO2 based on a list with CO2 gramse per unit:<br>
+                                   Each unit is converted to grams of CO2 based on a list with CO2 grams per unit:<br>
                                    LPG - calculated according to car manual based on average consumption per 100km and average CO2 per 100km. This is calculated at 1620grams per liter.<br>
                                    Gasoline - calculated according to car manual based on average consumption per 100km and average CO2 per 100km. This is calculated at 2260grams per liter.<br>
                                    Electricity - according to electricity provider - printed on monthly statement. This is calculated at 269grams per KWh.<br>
