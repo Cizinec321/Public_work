@@ -25,20 +25,15 @@
 
 <script>
        document.addEventListener('DOMContentLoaded', function() {
-              const image_gen = document.getElementById('deforest-gen')
-              const image_old = document.getElementById('deforest-old');
-              if (!image_gen || !image_old) return;
+              const image_gen = document.getElementById('deforest-gen');
+              if (!image_gen ) return;
 
               image_gen.style.position = 'absolute';
               image_gen.style.right = image_gen.style.right || '0px';
               image_gen.style.top = image_gen.style.top || '0px';
               image_gen.style.cursor = 'grab';
 
-              
-              image_old.style.position = 'absolute';
-              image_old.style.right = image_old.style.right || '0px';
-              image_old.style.top = image_old.style.top || '0px';
-              image_old.style.cursor = 'grab';
+
 
               let dragging = false;
               let startX = 0;
@@ -55,15 +50,7 @@
               startTop = parseFloat(image_gen.style.top) || 0;
               event.preventDefault();
               });
-              image_old.addEventListener('mousedown', function(event) {
-              dragging = true;
-              image_old.style.cursor = 'grabbing';
-              startX = event.clientX;
-              startY = event.clientY;
-              startRight = parseFloat(image_old.style.right) || 0;
-              startTop = parseFloat(image_old.style.top) || 0;
-              event.preventDefault();
-              });
+
 
               document.addEventListener('mousemove', function(event) {
               if (!dragging) return;
@@ -71,8 +58,7 @@
               const dy = event.clientY - startY;
               image_gen.style.right = (startRight - dx) + 'px';
               image_gen.style.top = (startTop + dy) + 'px';
-              image_old.style.right = (startRight - dx) + 'px';
-              image_old.style.top = (startTop + dy) + 'px';       
+    
 
               });
 
@@ -90,25 +76,7 @@
               event.preventDefault();
               });
 
-              image_old.addEventListener('touchstart', function(event) {
-              dragging = true;
-              startX = event.touches[0].clientX;
-              startY = event.touches[0].clientY;
-              startRight = parseFloat(image_old.style.right) || 0;
-              startTop = parseFloat(image_old.style.top) || 0;
-              event.preventDefault();
-              });
 
-              image_old.addEventListener('touchmove', function(event) {       
-                     if (!dragging) return;
-                     const dx = event.touches[0].clientX - startX;
-                     const dy = event.touches[0].clientY - startY;
-                     image_gen.style.right = (startRight - dx) + 'px';
-                     image_gen.style.top = (startTop + dy) + 'px';
-                     image_old.style.right = (startRight - dx) + 'px';
-                     image_old.style.top = (startTop + dy) + 'px';
-                     event.preventDefault(); // Prevent scrolling while dragging
-              });
 
 
               image_gen.addEventListener('touchmove', function(event) {       
@@ -117,8 +85,6 @@
                      const dy = event.touches[0].clientY - startY;
                      image_gen.style.right = (startRight - dx) + 'px';
                      image_gen.style.top = (startTop + dy) + 'px';
-                     image_old.style.right = (startRight - dx) + 'px';
-                     image_old.style.top = (startTop + dy) + 'px';
                      event.preventDefault(); // Prevent scrolling while dragging
               });
 
@@ -131,22 +97,37 @@
                      dragging = false;
               });
 
-              image_old.addEventListener('touchend', function(event) 
-              
-              {
-                     if (!dragging) return;
-                     dragging = false;
-              });
+
 
 
               if (!dragging) return;
               dragging = false;
               image_gen.style.cursor = 'grab';
-              image_old.style.cursor = 'grab';             
+       
    
               });
               });
        
+</script>
+
+<script>
+const deforestImages = {{ deforest_images_paths|safe }};
+const deforestNames = {{ deforest_images_names|safe }};
+let currentImageIndex = 0;
+
+function cycleDeforestImage() {
+    const imageElement = document.getElementById('deforest-gen');
+    const nameElement = document.getElementById('deforest-name');
+    if (imageElement) {
+        currentImageIndex = (currentImageIndex + 1) % deforestImages.length;
+        imageElement.src = deforestImages[currentImageIndex];
+    };
+    if (nameElement) {
+        nameElement.textContent = 'See next captured date: ' + deforestNames[(currentImageIndex + 1) % deforestImages.length];
+    }
+}
+
+
 </script>
 
 {%endblock%}
@@ -438,24 +419,24 @@
 {%block deforest%}
        {% if mobile %}
               <div class="image-container">
-              <img id="deforest-gen" src="static\deforestation_gen.png" class="deforest-image-new">
-              <img id="deforest-old" src="static\deforestation_old.png" class="deforest-image-old">
+              <img id="deforest-gen" src="static\20170825.png" class="deforest-image-new">
               
               <div class="text-container">  
-              <button id="toggle-btn" class="toggle-button"  onclick="if (document.getElementById('deforest-old').style.display=== 'none'){document.getElementById('deforest-old').style.position='absolute',document.getElementById('deforest-old').style.left='0px; top: 0px',document.getElementById('deforest-old').style.cursor='grab',document.getElementById('deforest-old').style.display=''}else{document.getElementById('deforest-old').style.display = 'none'}">Switch Version</button>      
+              <button id="deforest-name" class="toggle-button"  onclick="cycleDeforestImage()">See next captured date: 20250629</button>   
               <p class="phl">
-              Lorem Ipsum
+              Deforestation monitor
               </p><br>
               <p class="p1l">
-              The standard Lorem Ipsum passage
+              I am monitoring the deforestation activity in the western forest alongside of Baile Herculane.
               </p>
               <p class="p1l">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit,<br> 
-              sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<br>
-              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi<br>
-               ut aliquip ex ea commodo consequat. <br>
-              Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. <br>
-              Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br>
+              I have spent allot of time in this region during childhood so I am personally invested in this area.<br> 
+              The way this monitor works is that I use Copernicus Sattelite imagery downloaded during high sumertime.<br>
+              After downloading the imagge from a predefined BBOX, I substract the pixel values from the previous date.<br>
+              I then convert the difference immage to a bianry collor scheme and save the pixel values as an array.<br>
+              Lastly, I apply a DBSCAN algorithm to highlight the difference (deforested areas).<br>
+              I manually opt out the areas close to villages which have a high annual variation.<br>
+              Details available in my GithHub public repo or upon request.<br>
               </p><br>
               <p class="p1l">
               The standard Lorem Ipsum passage
@@ -490,24 +471,24 @@
 
        {% else %}
               <div class="image-container">
-              <img id="deforest-gen" src="static\deforestation_gen.png" class="deforest-image-new">
-              <img id="deforest-old" src="static\deforestation_old.png" class="deforest-image-old">
+              <img id="deforest-gen" src="static\20170825.png" class="deforest-image-new">
               
               <div class="text-container">  
-              <button id="toggle-btn" class="toggle-button"  onclick="if (document.getElementById('deforest-old').style.display=== 'none'){document.getElementById('deforest-old').style.position='absolute',document.getElementById('deforest-old').style.left='0px; top: 0px',document.getElementById('deforest-old').style.cursor='grab',document.getElementById('deforest-old').style.display=''}else{document.getElementById('deforest-old').style.display = 'none'}">Switch Version</button>      
+              <button id="deforest-name" class="toggle-button"  onclick="cycleDeforestImage()">See next captured date: 20250629</button>      
               <p class="phl">
-              Lorem Ipsum
+              Deforestation monitor
               </p><br>
               <p class="p1l">
-              The standard Lorem Ipsum passage
+              I am monitoring the deforestation activity in the western forest alongside of Baile Herculane.
               </p>
               <p class="p1l">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit,<br> 
-              sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<br>
-              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi<br>
-               ut aliquip ex ea commodo consequat. <br>
-              Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. <br>
-              Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br>
+              I have spent allot of time in this region during childhood so I am personally invested in this area.<br> 
+              The way this monitor works is that I use Copernicus Sattelite imagery downloaded during high sumertime.<br>
+              After downloading the imagge from a predefined BBOX, I substract the pixel values from the previous date.<br>
+              I then convert the difference immage to a bianry collor scheme and save the pixel values as an array.<br>
+              Lastly, I apply a DBSCAN algorithm to highlight the difference (deforested areas).<br>
+              I manually opt out the areas close to villages which have a high annual variation.<br>
+              Details available in my GithHub public repo or upon request.<br>
               </p><br>
               <p class="p1l">
               The standard Lorem Ipsum passage
