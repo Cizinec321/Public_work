@@ -88,6 +88,11 @@ class co2_rolling_log_Serializer(serializers.ModelSerializer):
     class Meta:
         model = co_rolling_log
         fields = '__all__'
+
+class co2_items_list_Serializer(serializers.ModelSerializer):
+    class Meta:
+        model = co2_items_list
+        fields = '__all__'
         
         
 
@@ -100,3 +105,16 @@ class co2_rolling_log_ListView(generics.ListAPIView):
     queryset = co_rolling_log.objects.all()
     serializer_class = co2_rolling_log_Serializer
     http_method_names = ['get']
+    
+class co2_items_list_ListView(generics.ListAPIView):
+    queryset = co2_items_list.objects.all()
+    serializer_class = co2_items_list_Serializer
+    http_method_names = ['get']
+    
+#a table that holds the path and date of the satelite immages i downloaded
+class deforest_images(models.Model):
+    
+    managed=True
+    db_table = "'deforest_images'"
+    date=models.IntegerField()
+    path=models.CharField(max_length=250)

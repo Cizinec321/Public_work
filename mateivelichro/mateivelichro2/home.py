@@ -1,18 +1,23 @@
 from django.shortcuts import render
+
+import copsci
 from . import forms, models
 import b_classes
 from django.core.mail import send_mail
 import requests
 import json
 import os
-
+from datetime import datetime
+from django.conf import settings
+import cv2
 
 #GLOBAL VARIABLES read from os variables as passed parameters
 STEAM_KEY= os.environ['STEAM_KEY']
 STEAM_ID= os.environ['STEAM_ID']
 GITHUB_AUTHORIZATION= os.environ['GITHUB_AUTHORIZATION']
 ITEMS_LIST=['LPG','Gasoline','Elec_ap8','Elec_ap20','Gas_ap8','Gas_ap20','Work_flight','Leisure_flight']
-
+COP_KEY= os.environ['COP_KEY']
+COP_ID= os.environ['COP_ID']
 
 
 
@@ -52,7 +57,14 @@ def gen_steam_plate():
           out_html=''
 
     return out_html
-
+#test if inout value is valid date
+def is_valid_date(date_str):
+    try:
+        # This checks both format AND if the date actually exists
+        datetime.strptime(date_str, '%Y-%m-%d')
+        return True
+    except ValueError:
+        return False
 # this function reads github API and returns data in a specific, usable format to print in 
 def gen_github_plate():
     
@@ -84,7 +96,6 @@ def gen_github_plate():
 # =============  H  O  M  E  =============  
 def home(request):
     agent = request.META["HTTP_USER_AGENT"]
-    
     #default to non-mobile
     mobile=False
     comm_content_class='comm-content'
@@ -127,8 +138,10 @@ def home(request):
 # =============  Initiating hobby section  =============    
     steam_plate=gen_steam_plate()
     github_plate=gen_github_plate()
-    
 
+#============== initiating deforestation image gen section  =============    
+    deforest_images_paths = list(models.deforest_images.objects.values_list('path', flat=True)) 
+    deforest_images_names = list(models.deforest_images.objects.values_list('date', flat=True)) 
     #if a POST method is initiated
     if request.method=='POST':
                     # if register form button is pressed, send me an e-mail with the data
@@ -148,11 +161,11 @@ def home(request):
                                         )
 
                             # If form is valid, return main landing page with a message saying all went well
-                            return render(request,'landing_alt.html',{"work_flight":work_flight,"leisure_flight":leisure_flight,"gasoline":gasoline,"lpg" : lpg, "elec_ap8": elec_ap8, "elec_ap20": elec_ap20,'display_trigger_comm':'<div id="comm_div" class="'+comm_content_class+'" style="display:block">','comm_msg':'Thank you! Your message was sent to my inbox. I will reply as soon as possible.','pers_data_form':pers_dat_form,'co2_form':co2_form,'steam_plate':steam_plate,'github_plate':github_plate,'mobile':mobile})
+                            return render(request,'landing_alt.html',{'deforest_images_names': deforest_images_names, 'deforest_images_paths': deforest_images_paths, "work_flight":work_flight, "leisure_flight":leisure_flight, "gasoline":gasoline, "lpg" : lpg, "elec_ap8": elec_ap8, "elec_ap20": elec_ap20, 'display_trigger_comm':'<div id="comm_div" class="'+comm_content_class+'" style="display:block">', 'comm_msg':'Thank you! Your message was sent to my inbox. I will reply as soon as possible.', 'pers_data_form':pers_dat_form, 'co2_form':co2_form, 'steam_plate':steam_plate, 'github_plate':github_plate, 'mobile':mobile})
                              
                         else:
                            # If form is NOT valid, return main landing page with a message saying somethign went wrong
-                           return render(request,'landing_alt.html',{"work_flight":work_flight,"leisure_flight":leisure_flight,"gasoline":gasoline,"lpg" : lpg, "elec_ap8": elec_ap8, "elec_ap20": elec_ap20,'display_trigger_comm':'<div id="comm_div" class="'+comm_content_class+'" style="display:block">','comm_msg':'Something went wrong. Please check the form and try again.','pers_data_form':pers_dat_form,'co2_form':co2_form,'steam_plate':steam_plate,'github_plate':github_plate,'mobile':mobile})
+                           return render(request,'landing_alt.html',{'deforest_images_names': deforest_images_names, 'deforest_images_paths': deforest_images_paths, "work_flight":work_flight, "leisure_flight":leisure_flight, "gasoline":gasoline, "lpg" : lpg, "elec_ap8": elec_ap8, "elec_ap20": elec_ap20, 'display_trigger_comm':'<div id="comm_div" class="'+comm_content_class+'" style="display:block">', 'comm_msg':'Something went wrong. Please check the form and try again.', 'pers_data_form':pers_dat_form, 'co2_form':co2_form, 'steam_plate':steam_plate, 'github_plate':github_plate, 'mobile':mobile})
                     
                     
                     
@@ -199,8 +212,26 @@ def home(request):
                                 co2_inst.item_name=co2_form.cleaned_data['item_name']                        
                                 co2_inst.quantity=co2_form.cleaned_data['quantity']
                                 co2_inst.save()
+                    if request.POST.get("deforest_gen"):
+                        full_date = request.POST.get('Full_date')
+                        if is_valid_date(full_date):
+                            try:
+                                latest_deforest_entry = str(models.deforest_images.objects.order_by('-date').values_list('date', flat=True)[0])
+                                print(f"{latest_deforest_entry[:4]}-{latest_deforest_entry[4:6]}-{latest_deforest_entry[6:]}")
+                                image_comparison_test=copsci.copsci('test name', COP_ID,COP_KEY,new_yyyy_mm_dd=full_date,old_yyyy_mm_dd=f"{latest_deforest_entry[:4]}-{latest_deforest_entry[4:6]}-{latest_deforest_entry[6:]}")
+                                date_int = int(full_date.replace('-', ''))
+                                cv2.imwrite(os.path.join(settings.BASE_DIR, 'static', str(date_int)+'.png'), image_comparison_test.diff_img)                        
+                                deforest_gen_entry = models.deforest_images()
+                                deforest_gen_entry.date = date_int
+                                deforest_gen_entry.path = 'static/'+str(date_int)+'.png'
+                                deforest_gen_entry.save()
+                            except:
+                                print("Error generating deforestation image")
+                        else:
+                            print("Invalid date format")
+                        
 
 
     # Generic return
-    return render(request,'landing_alt.html',{"work_flight":work_flight,"leisure_flight":leisure_flight,"gasoline":gasoline,"lpg" : lpg, "elec_ap8": elec_ap8, "elec_ap20": elec_ap20, "gas_ap8": gas_ap8, "gas_ap20": gas_ap20,'display_trigger_comm':'<div id="comm_div" class="'+comm_content_class+'" style="display:none">','pers_data_form':pers_dat_form,'co2_form':co2_form,'steam_plate':steam_plate,'github_plate':github_plate,'mobile':mobile})
+    return render(request,'landing_alt.html',{'deforest_images_names': deforest_images_names, 'deforest_images_paths': deforest_images_paths, "work_flight":work_flight, "leisure_flight":leisure_flight, "gasoline":gasoline, "lpg" : lpg, "elec_ap8": elec_ap8, "elec_ap20": elec_ap20, "gas_ap8": gas_ap8, "gas_ap20": gas_ap20,'display_trigger_comm':'<div id="comm_div" class="'+comm_content_class+'" style="display:none">','pers_data_form':pers_dat_form,'co2_form':co2_form,'steam_plate':steam_plate,'github_plate':github_plate,'mobile':mobile})
 
